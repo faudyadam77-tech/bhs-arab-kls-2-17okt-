@@ -393,3 +393,134 @@
                     data.forEach(item => {
                         // Format waktu agar lebih mudah dibaca
                         const date = new Date(item.waktu);
+                        const timeStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                        
+                        html += `
+                            <div class="leaderboard-item">
+                                <div>
+                                    <span class="lb-name">${item.nama}</span>
+                                    <span class="lb-class">${item.kelas}</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div class="lb-score">Nilai: ${item.skor}/${item.total}</div>
+                                    <div class="lb-time">🕒 ${timeStr}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error("Gagal memuat data:", err);
+                    document.getElementById('leaderboard-list').innerHTML = '<div class="empty-leaderboard">Gagal memuat data pengumpulan.</div>';
+                });
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        document.querySelectorAll('.option input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const question = this.closest('.question');
+                question.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                this.closest('.option').classList.add('selected');
+            });
+        });
+
+        function submitQuiz() {
+            const nama = document.getElementById('namaSiswa').value.trim();
+            const kelas = document.getElementById('kelasSiswa').value;
+            
+            if (!nama || !kelas) {
+                alert('⚠️ Mohon isi Nama Lengkap dan pilih Kelas terlebih dahulu!');
+                return;
+            }
+
+            const form = document.getElementById('quiz-form');
+            const formData = new FormData(form);
+            
+            let allAnswered = true;
+            for (let i = 1; i <= 8; i++) {
+                if (!formData.get(`q${i}`)) { allAnswered = false; break; }
+            }
+
+            if (!allAnswered) {
+                alert('⚠️ Mohon jawab semua 8 soal terlebih dahulu!');
+                return;
+            }
+
+            let score = 0;
+            const answers = {};
+            const details = [];
+
+            for (let i = 1; i <= 8; i++) {
+                const userAnswer = formData.get(`q${i}`);
+                const correctAnswer = correctAnswers[`q${i}`];
+                answers[`q${i}`] = userAnswer;
+                const isCorrect = userAnswer === correctAnswer;
+                if (isCorrect) score++;
+
+                details.push({ question: questionTexts[`q${i}`], userAnswer: userAnswer, correctAnswer: correctAnswer, isCorrect: isCorrect });
+            }
+
+            displayResults(score, details, nama);
+
+            if (APP_SCRIPT_URL !== 'MASUKKAN_URL_APP_SCRIPT_ANDA_DI_SINI') {
+                sendToSpreadsheet(score, answers, nama, kelas);
+            } else {
+                alert('⚠️ URL App Script belum dikonfigurasi. Hasil hanya ditampilkan di halaman ini.');
+            }
+        }
+
+        function displayResults(score, details, nama) {
+            document.getElementById('score-display').textContent = `${score}/8`;
+            let message = score === 8 ? '🌟 Sempurna! Kamu hebat sekali, ' + nama + '!' : 
+                          score >= 6 ? '👍 Bagus! Terus belajar ya, ' + nama + '!' : 
+                          score >= 4 ? '💪 Lumayan! Ayo belajar lagi, ' + nama + '!' : 
+                          '📚 Jangan menyerah! Coba belajar lagi, ' + nama + '!';
+            document.getElementById('score-message').textContent = message;
+
+            const detailsContainer = document.getElementById('result-details');
+            detailsContainer.innerHTML = '<h3 style="margin-bottom: 15px;">📋 Detail Jawaban:</h3>';
+            details.forEach((detail, index) => {
+                const resultItem = document.createElement('div');
+                resultItem.className = `result-item ${detail.isCorrect ? 'correct' : 'incorrect'}`;
+                resultItem.innerHTML = `
+                    <strong>Soal ${index + 1}:</strong> ${detail.question}<br>
+                    <strong>Jawabanmu:</strong> ${detail.userAnswer.toUpperCase()} ${detail.isCorrect ? '✅' : '❌'}<br>
+                    ${!detail.isCorrect ? `<strong>Jawaban Benar:</strong> ${detail.correctAnswer.toUpperCase()}` : ''}
+                `;
+                detailsContainer.appendChild(resultItem);
+            });
+            showPage('page-hasil');
+        }
+
+        function sendToSpreadsheet(score, answers, nama, kelas) {
+            const data = {
+                timestamp: new Date().toISOString(),
+                nama: nama,
+                kelas: kelas,
+                score: score,
+                total: 8,
+                answers: answers
+            };
+
+            fetch(APP_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(() => {
+                console.log('Data berhasil dikirim ke spreadsheet');
+                // Reload leaderboard setelah submit berhasil (dengan delay kecil)
+                setTimeout(loadSubmissions, 1500);
+            }).catch(error => {
+                console.error('Error mengirim data:', error);
+            });
+        }
+    </script>
+</body>
+</html>
