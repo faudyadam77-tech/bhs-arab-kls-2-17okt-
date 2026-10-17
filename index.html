@@ -4,406 +4,600 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Belajar Kosakata Bahasa Arab - Seragam Sekolah</title>
+    <!-- Tailwind CSS for modern utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for friendly typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Custom font declarations and animations */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Fredoka', 'Nunito', sans-serif;
+            background-color: #f0fdf4;
+            background-image: radial-gradient(#bbf7d0 1.5px, transparent 1.5px), radial-gradient(#bbf7d0 1.5px, #f0fdf4 1.5px);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
-        }
-        .header h1 { font-size: 2.2em; margin-bottom: 10px; }
-        .header h2 { font-size: 1.3em; font-weight: normal; }
-        .page { display: none; }
-        .page.active { display: block; }
 
-        /* Papan Pengumuman */
-        .leaderboard-box {
-            background: #e8f5e9;
-            border: 2px solid #4caf50;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
+        .font-arabic {
+            font-family: 'Amiri', serif;
         }
-        .leaderboard-box h3 { color: #2e7d32; margin-bottom: 15px; text-align: center; }
-        .leaderboard-list {
-            max-height: 250px;
-            overflow-y: auto;
-            background: white;
+
+        /* Fun animations for primary grade children */
+        @keyframes bounce-gentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .animate-bounce-gentle {
+            animation: bounce-gentle 3s infinite ease-in-out;
+        }
+
+        .animate-pulse-subtle {
+            animation: pulse-subtle 2.5s infinite ease-in-out;
+        }
+
+        /* Custom scrollbar for leaderboard */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
             border-radius: 10px;
-            padding: 10px;
         }
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            font-size: 0.95em;
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
         }
-        .leaderboard-item:last-child { border-bottom: none; }
-        .lb-name { font-weight: bold; color: #333; }
-        .lb-class { 
-            background: #667eea; color: white; 
-            padding: 3px 10px; border-radius: 20px; font-size: 0.85em; 
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
-        .lb-score { color: #2e7d32; font-weight: bold; }
-        .lb-time { color: #666; font-size: 0.85em; }
-        .empty-leaderboard { text-align: center; color: #666; padding: 20px; font-style: italic; }
 
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
+        /* Card interaction styles */
         .vocab-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            transition: transform 0.3s;
-            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .vocab-card:hover { transform: translateY(-5px); }
-        .vocab-card img {
-            width: 100%; height: 180px; object-fit: contain;
-            background: white; border-radius: 10px; padding: 10px; margin-bottom: 10px;
+        .vocab-card:hover {
+            transform: translateY(-8px) scale(1.02);
         }
-        .vocab-card .arabic { font-size: 2em; color: white; margin: 10px 0; font-family: 'Traditional Arabic', serif; }
-        .vocab-card .latin { font-size: 1.1em; color: white; font-style: italic; }
-        .vocab-card .indonesian { font-size: 1.2em; color: white; font-weight: bold; margin-top: 5px; }
 
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; padding: 15px 40px; border: none; border-radius: 50px;
-            font-size: 1.2em; cursor: pointer; transition: transform 0.3s; margin: 10px;
+        .btn-interactive {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .btn:hover { transform: scale(1.05); }
-        .btn-container { text-align: center; margin: 30px 0; }
+        .btn-interactive:hover {
+            transform: translateY(-3px) scale(1.03);
+        }
+        .btn-interactive:active {
+            transform: translateY(2px) scale(0.98);
+        }
 
-        /* Form Identitas */
-        .identity-box {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+        .option-card {
+            transition: all 0.2s ease;
         }
-        .identity-box h3 { color: #856404; margin-bottom: 15px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px;
-            font-size: 1em; transition: border-color 0.3s;
-        }
-        .form-group input:focus, .form-group select:focus { border-color: #667eea; outline: none; }
-
-        .quiz-container { max-width: 800px; margin: 0 auto; }
-        .question {
-            background: #f8f9fa; padding: 25px; border-radius: 15px;
-            margin-bottom: 20px; border-left: 5px solid #667eea;
-        }
-        .question h3 { color: #667eea; margin-bottom: 15px; font-size: 1.2em; }
-        .options { display: flex; flex-direction: column; gap: 10px; }
-        .option {
-            background: white; padding: 15px; border-radius: 10px; cursor: pointer;
-            transition: all 0.3s; border: 2px solid #e0e0e0; display: flex; align-items: center;
-        }
-        .option:hover { background: #e3f2fd; border-color: #667eea; }
-        .option.selected { background: #667eea; color: white; border-color: #667eea; }
-        .option input { margin-right: 10px; }
-
-        .result-container { text-align: center; padding: 40px; }
-        .score { font-size: 4em; color: #667eea; margin: 20px 0; }
-        .result-details {
-            background: #f8f9fa; padding: 20px; border-radius: 15px;
-            margin: 20px 0; text-align: left;
-        }
-        .result-item { padding: 10px; margin: 10px 0; border-radius: 10px; }
-        .result-item.correct { background: #d4edda; border-left: 4px solid #28a745; }
-        .result-item.incorrect { background: #f8d7da; border-left: 4px solid #dc3545; }
-        .info-box {
-            background: #d1ecf1; border: 1px solid #17a2b8; padding: 15px;
-            border-radius: 10px; margin: 20px 0;
-        }
-        .cp-tp-box {
-            background: #e3f2fd; border: 1px solid #667eea; padding: 20px;
-            border-radius: 10px; margin: 20px 0;
-        }
-        .cp-tp-box h3 { color: #667eea; margin-bottom: 10px; }
-
-        @media (max-width: 768px) {
-            .vocab-grid { grid-template-columns: 1fr; }
-            .header h1 { font-size: 1.6em; }
-            .leaderboard-item { flex-direction: column; align-items: flex-start; gap: 5px; }
+        .option-card.selected {
+            border-color: #059669 !important;
+            background-color: #ecfdf5 !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- HALAMAN MATERI -->
-        <div id="page-materi" class="page active">
-            <div class="header">
-                <h1>📚 Belajar Kosakata Bahasa Arab</h1>
-                <h2>الزِّي الْمَدْرَسِيِّ (Seragam Sekolah)</h2>
-            </div>
+<body class="min-h-screen text-slate-800 antialiased pb-12">
 
-            <!-- PAPAN PENGUMUMAN -->
-            <div class="leaderboard-box">
-                <h3>🏆 Papan Pengumuman: Siswa yang Sudah Mengerjakan</h3>
-                <div id="leaderboard-list" class="leaderboard-list">
-                    <div class="empty-leaderboard">Memuat data...</div>
-                </div>
-            </div>
+    <div class="max-w-4xl mx-auto px-4 pt-6">
 
-            <div class="cp-tp-box">
-                <h3>🎯 Capaian Pembelajaran (CP) & Tujuan Pembelajaran (TP)</h3>
-                <p><strong>CP:</strong> Peserta didik mampu mengenal dan mengucapkan kosakata bahasa Arab sederhana tentang seragam sekolah dengan benar.</p>
-                <p><strong>TP:</strong> Mengenal 7 kosakata, mengucapkan dengan benar, dan mengaitkan gambar dengan kosakata yang tepat.</p>
-            </div>
+        <!-- ================= HALAMAN MATERI ================= -->
+        <div id="page-materi" class="page-content space-y-8">
+            
+            <!-- Header Utama Cerah & Ramah Anak -->
+            <header class="bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 p-6 md:p-8 rounded-3xl shadow-xl text-center text-white relative overflow-hidden">
+                <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-white/20 rounded-full blur-sm"></div>
+                <div class="absolute -left-8 -top-8 w-32 h-32 bg-white/20 rounded-full blur-sm"></div>
+                
+                <span class="inline-block bg-white/30 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide uppercase mb-2">Kelas 2 SD</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-2 tracking-wide drop-shadow-md">Belajar Bahasa Arab</h1>
+                <h2 class="text-2xl md:text-3xl font-arabic font-bold text-yellow-100 tracking-wider">الزِّيُّ الْمَدْرَسِيُّ</h2>
+                <p class="text-emerald-50 mt-1 font-medium text-lg">( Seragam Sekolah )</p>
+            </header>
 
-            <div class="info-box">
-                <strong>📖 Petunjuk Belajar:</strong> Perhatikan gambar dan kosakata berikut. Hafalkan kosakata ini sebelum mengerjakan kuis! Jangan lupa isi nama dan kelas saat mulai kuis.
-            </div>
-
-            <div class="vocab-grid">
-                <div class="vocab-card">
-                    <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/dasi.jpeg" alt="Dasi">
-                    <div class="arabic">رِبَاطٌ</div>
-                    <div class="latin">Ribaatun</div>
-                    <div class="indonesian">Dasi</div>
+            <!-- Capaian & Tujuan Pembelajaran -->
+            <div class="bg-white rounded-3xl p-6 shadow-md border-4 border-emerald-100 relative">
+                <div class="bg-emerald-500 text-white font-bold text-sm px-4 py-1.5 rounded-full inline-block mb-3">
+                    Target Belajar Hari Ini
                 </div>
-                <div class="vocab-card">
-                    <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/kopiah.jpeg" alt="Kopiah">
-                    <div class="arabic">قَلَنْسُوَةٌ</div>
-                    <div class="latin">Qalansuwa</div>
-                    <div class="indonesian">Peci/Kopiah</div>
-                </div>
-                <div class="vocab-card">
-                    <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/hijab.jpeg" alt="Hijab">
-                    <div class="arabic">حِجَابٌ</div>
-                    <div class="latin">Hijaabun</div>
-                    <div class="indonesian">Jilbab/Kerudung</div>
-                </div>
-                <div class="vocab-card">
-                    <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/sabuk.jpeg" alt="Sabuk">
-                    <div class="arabic">حِزَامٌ</div>
-                    <div class="latin">Hizaamun</div>
-                    <div class="indonesian">Sabuk/Ikat Pinggang</div>
-                </div>
-                <div class="vocab-card">
-                    <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/kaos_kaki.jpeg" alt="Kaos Kaki">
-                    <div class="arabic">جَوْرَبٌ</div>
-                    <div class="latin">Jawrabun</div>
-                    <div class="indonesian">Kaos Kaki</div>
-                </div>
-                <div class="vocab-card">
-                    <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/sepatu.jpeg" alt="Sepatu">
-                    <div class="arabic">حِذَاءٌ</div>
-                    <div class="latin">Hidzaa'un</div>
-                    <div class="indonesian">Sepatu</div>
-                </div>
-                <div class="vocab-card">
-                    <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/topi.jpeg" alt="Topi">
-                    <div class="arabic">قُبَّعَةٌ</div>
-                    <div class="latin">Qubba'atun</div>
-                    <div class="indonesian">Topi</div>
+                <div class="grid md:grid-cols-2 gap-4 text-slate-600 text-sm md:text-base leading-relaxed">
+                    <div class="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100">
+                        <span class="font-bold text-emerald-800 block mb-1">Capaian Pembelajaran (CP):</span>
+                        Mengenal dan mengucapkan kosakata bahasa Arab sederhana tentang seragam sekolah dengan percaya diri dan benar.
+                    </div>
+                    <div class="bg-teal-50/60 p-4 rounded-2xl border border-teal-100">
+                        <span class="font-bold text-teal-800 block mb-1">Tujuan Pembelajaran (TP):</span>
+                        Mengenal 7 nama benda, mampu mengucapkannya dengan tepat, serta mencocokkan gambar dengan artinya.
+                    </div>
                 </div>
             </div>
 
-            <div class="btn-container">
-                <button class="btn" onclick="showPage('page-kuis')">📝 Mulai Kuis</button>
+            <!-- Petunjuk Belajar -->
+            <div class="bg-amber-50 border-3 border-amber-200 rounded-2xl p-4 md:p-5 flex items-center space-x-4">
+                <div class="bg-amber-400 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0 shadow-sm">
+                    💡
+                </div>
+                <div>
+                    <h3 class="font-bold text-amber-900 text-base md:text-lg">Petunjuk Guru & Orang Tua:</h3>
+                    <p class="text-amber-800 text-sm md:text-base">Tekan atau klik gambar/kartu untuk mendengarkan pengucapan Bahasa Arabnya! Hafalkan sebelum mulai kuis ya.</p>
+                </div>
             </div>
+
+            <!-- GRID KARTU KOSAKATA -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Dasi -->
+                <div class="vocab-card bg-white rounded-3xl p-5 border-4 border-sky-100 shadow-lg text-center cursor-pointer relative group" onclick="speakArabic('رِبَاطٌ')">
+                    <div class="bg-sky-50 rounded-2xl p-4 mb-4 h-48 flex items-center justify-center overflow-hidden border border-sky-100">
+                        <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/dasi.jpeg" alt="Dasi" class="max-h-full max-w-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://placehold.co/300x300/e0f2fe/0369a1?text=Dasi'">
+                    </div>
+                    <div class="font-arabic text-4xl font-bold text-sky-800 mb-1">رِبَاطٌ</div>
+                    <div class="text-sky-600 font-bold text-lg mb-1 tracking-wide">Ribaatun</div>
+                    <span class="inline-block bg-sky-100 text-sky-800 font-extrabold text-sm px-4 py-1 rounded-full">Dasi</span>
+                    <p class="text-xs text-sky-400 mt-2 font-medium">🔊 Klik untuk Suara</p>
+                </div>
+
+                <!-- Card 2: Kopiah -->
+                <div class="vocab-card bg-white rounded-3xl p-5 border-4 border-purple-100 shadow-lg text-center cursor-pointer relative group" onclick="speakArabic('قَلَنْسُوَةٌ')">
+                    <div class="bg-purple-50 rounded-2xl p-4 mb-4 h-48 flex items-center justify-center overflow-hidden border border-purple-100">
+                        <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/kopiah.jpeg" alt="Kopiah" class="max-h-full max-w-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://placehold.co/300x300/f3e8ff/6b21a8?text=Kopiah'">
+                    </div>
+                    <div class="font-arabic text-4xl font-bold text-purple-800 mb-1">قَلَنْسُوَةٌ</div>
+                    <div class="text-purple-600 font-bold text-lg mb-1 tracking-wide">Qalansuwa</div>
+                    <span class="inline-block bg-purple-100 text-purple-800 font-extrabold text-sm px-4 py-1 rounded-full">Peci / Kopiah</span>
+                    <p class="text-xs text-purple-400 mt-2 font-medium">🔊 Klik untuk Suara</p>
+                </div>
+
+                <!-- Card 3: Hijab -->
+                <div class="vocab-card bg-white rounded-3xl p-5 border-4 border-pink-100 shadow-lg text-center cursor-pointer relative group" onclick="speakArabic('حِجَابٌ')">
+                    <div class="bg-pink-50 rounded-2xl p-4 mb-4 h-48 flex items-center justify-center overflow-hidden border border-pink-100">
+                        <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/hijab.jpeg" alt="Hijab" class="max-h-full max-w-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://placehold.co/300x300/fce7f3/9d174d?text=Hijab'">
+                    </div>
+                    <div class="font-arabic text-4xl font-bold text-pink-800 mb-1">حِجَابٌ</div>
+                    <div class="text-pink-600 font-bold text-lg mb-1 tracking-wide">Hijaabun</div>
+                    <span class="inline-block bg-pink-100 text-pink-800 font-extrabold text-sm px-4 py-1 rounded-full">Jilbab / Kerudung</span>
+                    <p class="text-xs text-pink-400 mt-2 font-medium">🔊 Klik untuk Suara</p>
+                </div>
+
+                <!-- Card 4: Sabuk -->
+                <div class="vocab-card bg-white rounded-3xl p-5 border-4 border-amber-100 shadow-lg text-center cursor-pointer relative group" onclick="speakArabic('حِزَامٌ')">
+                    <div class="bg-amber-50 rounded-2xl p-4 mb-4 h-48 flex items-center justify-center overflow-hidden border border-amber-100">
+                        <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/sabuk.jpeg" alt="Sabuk" class="max-h-full max-w-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://placehold.co/300x300/fef3c7/92400e?text=Sabuk'">
+                    </div>
+                    <div class="font-arabic text-4xl font-bold text-amber-800 mb-1">حِزَامٌ</div>
+                    <div class="text-amber-600 font-bold text-lg mb-1 tracking-wide">Hizaamun</div>
+                    <span class="inline-block bg-amber-100 text-amber-800 font-extrabold text-sm px-4 py-1 rounded-full">Sabuk / Ikat Pinggang</span>
+                    <p class="text-xs text-amber-400 mt-2 font-medium">🔊 Klik untuk Suara</p>
+                </div>
+
+                <!-- Card 5: Kaos Kaki -->
+                <div class="vocab-card bg-white rounded-3xl p-5 border-4 border-emerald-100 shadow-lg text-center cursor-pointer relative group" onclick="speakArabic('جَوْرَبٌ')">
+                    <div class="bg-emerald-50 rounded-2xl p-4 mb-4 h-48 flex items-center justify-center overflow-hidden border border-emerald-100">
+                        <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/kaos_kaki.jpeg" alt="Kaos Kaki" class="max-h-full max-w-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://placehold.co/300x300/d1fae5/065f46?text=Kaos+Kaki'">
+                    </div>
+                    <div class="font-arabic text-4xl font-bold text-emerald-800 mb-1">جَوْرَبٌ</div>
+                    <div class="text-emerald-600 font-bold text-lg mb-1 tracking-wide">Jawrabun</div>
+                    <span class="inline-block bg-emerald-100 text-emerald-800 font-extrabold text-sm px-4 py-1 rounded-full">Kaos Kaki</span>
+                    <p class="text-xs text-emerald-400 mt-2 font-medium">🔊 Klik untuk Suara</p>
+                </div>
+
+                <!-- Card 6: Sepatu -->
+                <div class="vocab-card bg-white rounded-3xl p-5 border-4 border-indigo-100 shadow-lg text-center cursor-pointer relative group" onclick="speakArabic('حِذَاءٌ')">
+                    <div class="bg-indigo-50 rounded-2xl p-4 mb-4 h-48 flex items-center justify-center overflow-hidden border border-indigo-100">
+                        <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/sepatu.jpeg" alt="Sepatu" class="max-h-full max-w-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://placehold.co/300x300/e0e7ff/3730a3?text=Sepatu'">
+                    </div>
+                    <div class="font-arabic text-4xl font-bold text-indigo-800 mb-1">حِذَاءٌ</div>
+                    <div class="text-indigo-600 font-bold text-lg mb-1 tracking-wide">Hidzaa'un</div>
+                    <span class="inline-block bg-indigo-100 text-indigo-800 font-extrabold text-sm px-4 py-1 rounded-full">Sepatu</span>
+                    <p class="text-xs text-indigo-400 mt-2 font-medium">🔊 Klik untuk Suara</p>
+                </div>
+
+                <!-- Card 7: Topi -->
+                <div class="vocab-card bg-white rounded-3xl p-5 border-4 border-orange-100 shadow-lg text-center cursor-pointer relative group sm:col-span-2 lg:col-span-1" onclick="speakArabic('قُبَّعَةٌ')">
+                    <div class="bg-orange-50 rounded-2xl p-4 mb-4 h-48 flex items-center justify-center overflow-hidden border border-orange-100">
+                        <img src="https://cdn.jsdelivr.net/gh/faudyadam77-tech/bhs-arab-kls-2-17okt-@main/topi.jpeg" alt="Topi" class="max-h-full max-w-full object-contain rounded-xl group-hover:scale-110 transition-transform duration-300" onerror="this.src='https://placehold.co/300x300/ffedd5/9a3412?text=Topi'">
+                    </div>
+                    <div class="font-arabic text-4xl font-bold text-orange-800 mb-1">قُبَّعَةٌ</div>
+                    <div class="text-orange-600 font-bold text-lg mb-1 tracking-wide">Qubba'atun</div>
+                    <span class="inline-block bg-orange-100 text-orange-800 font-extrabold text-sm px-4 py-1 rounded-full">Topi</span>
+                    <p class="text-xs text-orange-400 mt-2 font-medium">🔊 Klik untuk Suara</p>
+                </div>
+
+            </div>
+
+            <!-- Papan Pengumuman / Leaderboard -->
+            <div class="bg-white rounded-3xl p-6 shadow-md border-4 border-teal-100">
+                <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+                    <h3 class="text-xl font-bold text-teal-800">Papan Pengumuman Siswa</h3>
+                    <span class="text-xs font-semibold bg-teal-100 text-teal-800 px-3 py-1 rounded-full">Selesai Kuis</span>
+                </div>
+                <div id="leaderboard-list" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-1">
+                    <div class="text-center text-slate-400 py-6 font-medium">Memuat data nilai...</div>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi Utama -->
+            <div class="text-center pt-4">
+                <button onclick="showPage('page-kuis')" class="btn-interactive bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xl px-10 py-5 rounded-3xl shadow-lg hover:shadow-xl tracking-wide w-full sm:w-auto">
+                    Mulai Kuis Sekarang ✨
+                </button>
+            </div>
+
         </div>
 
-        <!-- HALAMAN KUIS -->
-        <div id="page-kuis" class="page">
-            <div class="header">
-                <h1>📝 Kuis Kosakata Bahasa Arab</h1>
-                <h2>Jawab 8 pertanyaan berikut!</h2>
-            </div>
 
-            <div class="quiz-container">
-                <form id="quiz-form">
-                    <!-- IDENTITAS SISWA -->
-                    <div class="identity-box">
-                        <h3>👤 Identitas Siswa (Wajib Diisi)</h3>
-                        <div class="form-group">
-                            <label for="namaSiswa">Nama Lengkap:</label>
-                            <input type="text" id="namaSiswa" name="namaSiswa" placeholder="Contoh: Ahmad Fauzi" required>
+        <!-- ================= HALAMAN KUIS ================= -->
+        <div id="page-kuis" class="page-content hidden space-y-8">
+            
+            <header class="bg-gradient-to-r from-teal-500 to-emerald-500 p-6 md:p-8 rounded-3xl shadow-xl text-center text-white relative">
+                <button onclick="showPage('page-materi')" class="absolute left-4 top-4 bg-white/20 hover:bg-white/30 text-white text-sm font-bold px-4 py-2 rounded-2xl transition">
+                    ← Kembali
+                </button>
+                <h1 class="text-3xl md:text-4xl font-extrabold mt-2 mb-1">Kuis Latihan Kosakata</h1>
+                <p class="text-emerald-100 font-medium">Jawablah 8 pertanyaan sederhana di bawah ini!</p>
+            </header>
+
+            <form id="quiz-form" class="space-y-6">
+                
+                <!-- Identitas Siswa -->
+                <div class="bg-amber-50 rounded-3xl p-6 shadow-md border-4 border-amber-200">
+                    <h3 class="text-xl font-bold text-amber-900 mb-4 pb-2 border-b-2 border-amber-200/60">
+                        Isi Identitasmu Dulu Ya!
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="namaSiswa" class="block font-bold text-amber-900 text-sm mb-2">Nama Lengkap:</label>
+                            <input type="text" id="namaSiswa" name="namaSiswa" placeholder="Ketik nama lengkapmu..." required class="w-full bg-white border-2 border-amber-300 rounded-2xl px-4 py-3 text-slate-800 font-semibold focus:outline-none focus:border-emerald-500 transition shadow-sm">
                         </div>
-                        <div class="form-group">
-                            <label for="kelasSiswa">Kelas:</label>
-                            <select id="kelasSiswa" name="kelasSiswa" required>
+                        <div>
+                            <label for="kelasSiswa" class="block font-bold text-amber-900 text-sm mb-2">Pilih Kelas:</label>
+                            <select id="kelasSiswa" name="kelasSiswa" required class="w-full bg-white border-2 border-amber-300 rounded-2xl px-4 py-3 text-slate-800 font-semibold focus:outline-none focus:border-emerald-500 transition shadow-sm">
                                 <option value="">-- Pilih Kelas --</option>
                                 <option value="2A">Kelas 2A</option>
                                 <option value="2B">Kelas 2B</option>
                             </select>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Soal 1-8 (Sama seperti sebelumnya) -->
-                    <div class="question">
-                        <h3>1. Apa bahasa Arab dari "Dasi"?</h3>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q1" value="a" required><span>حِجَابٌ (Hijaabun)</span></label>
-                            <label class="option"><input type="radio" name="q1" value="b"><span>رِبَاطٌ (Ribaatun)</span></label>
-                            <label class="option"><input type="radio" name="q1" value="c"><span>حِزَامٌ (Hizaamun)</span></label>
-                        </div>
+                <!-- SOAL 1 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100">
+                    <div class="font-bold text-emerald-600 text-sm uppercase tracking-wider mb-2">Soal No. 1</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Apa bahasa Arab dari <span class="text-emerald-600">"Dasi"</span>?</h3>
+                    <div class="grid gap-3">
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q1" value="a" required class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">حِجَابٌ</span>
+                            <span class="text-slate-600 font-medium">(Hijaabun)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q1" value="b" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">رِبَاطٌ</span>
+                            <span class="text-slate-600 font-medium">(Ribaatun)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q1" value="c" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">حِزَامٌ</span>
+                            <span class="text-slate-600 font-medium">(Hizaamun)</span>
+                        </label>
                     </div>
-                    <div class="question">
-                        <h3>2. Gambar peci hitam dalam bahasa Arab disebut?</h3>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q2" value="a" required><span>قَلَنْسُوَةٌ (Qalansuwa)</span></label>
-                            <label class="option"><input type="radio" name="q2" value="b"><span>قُبَّعَةٌ (Qubba'atun)</span></label>
-                            <label class="option"><input type="radio" name="q2" value="c"><span>حِذَاءٌ (Hidzaa'un)</span></label>
-                        </div>
-                    </div>
-                    <div class="question">
-                        <h3>3. Apa arti dari kata حِجَابٌ (Hijaabun)?</h3>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q3" value="a" required><span>Sabuk</span></label>
-                            <label class="option"><input type="radio" name="q3" value="b"><span>Jilbab/Kerudung</span></label>
-                            <label class="option"><input type="radio" name="q3" value="c"><span>Topi</span></label>
-                        </div>
-                    </div>
-                    <div class="question">
-                        <h3>4. Bahasa Arab dari "Kaos Kaki" adalah?</h3>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q4" value="a" required><span>جَوْرَبٌ (Jawrabun)</span></label>
-                            <label class="option"><input type="radio" name="q4" value="b"><span>حِذَاءٌ (Hidzaa'un)</span></label>
-                            <label class="option"><input type="radio" name="q4" value="c"><span>حِزَامٌ (Hizaamun)</span></label>
-                        </div>
-                    </div>
-                    <div class="question">
-                        <h3>5. Apa arti dari kata حِذَاءٌ (Hidzaa'un)?</h3>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q5" value="a" required><span>Peci</span></label>
-                            <label class="option"><input type="radio" name="q5" value="b"><span>Dasi</span></label>
-                            <label class="option"><input type="radio" name="q5" value="c"><span>Sepatu</span></label>
-                        </div>
-                    </div>
-                    <div class="question">
-                        <h3>6. Gambar sabuk/ikat pinggang dalam bahasa Arab disebut?</h3>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q6" value="a" required><span>رِبَاطٌ (Ribaatun)</span></label>
-                            <label class="option"><input type="radio" name="q6" value="b"><span>حِزَامٌ (Hizaamun)</span></label>
-                            <label class="option"><input type="radio" name="q6" value="c"><span>قُبَّعَةٌ (Qubba'atun)</span></label>
-                        </div>
-                    </div>
-                    <div class="question">
-                        <h3>7. Apa bahasa Arab dari "Topi"?</h3>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q7" value="a" required><span>قَلَنْسُوَةٌ (Qalansuwa)</span></label>
-                            <label class="option"><input type="radio" name="q7" value="b"><span>حِجَابٌ (Hijaabun)</span></label>
-                            <label class="option"><input type="radio" name="q7" value="c"><span>قُبَّعَةٌ (Qubba'atun)</span></label>
-                        </div>
-                    </div>
-                    <div class="question">
-                        <h3>8. Manakah yang merupakan kosakata "Peci/Kopiah"?</h3>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q8" value="a" required><span>قَلَنْسُوَةٌ (Qalansuwa)</span></label>
-                            <label class="option"><input type="radio" name="q8" value="b"><span>جَوْرَبٌ (Jawrabun)</span></label>
-                            <label class="option"><input type="radio" name="q8" value="c"><span>حِزَامٌ (Hizaamun)</span></label>
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="btn-container">
-                        <button type="button" class="btn" onclick="submitQuiz()">🚀 Kirim Jawaban</button>
+                <!-- SOAL 2 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100">
+                    <div class="font-bold text-emerald-600 text-sm uppercase tracking-wider mb-2">Soal No. 2</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Bahasa Arab dari <span class="text-emerald-600">Peci / Kopiah</span> adalah?</h3>
+                    <div class="grid gap-3">
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q2" value="a" required class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">قَلَنْسُوَةٌ</span>
+                            <span class="text-slate-600 font-medium">(Qalansuwa)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q2" value="b" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">قُبَّعَةٌ</span>
+                            <span class="text-slate-600 font-medium">(Qubba'atun)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q2" value="c" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">حِذَاءٌ</span>
+                            <span class="text-slate-600 font-medium">(Hidzaa'un)</span>
+                        </label>
                     </div>
-                </form>
-            </div>
+                </div>
+
+                <!-- SOAL 3 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100">
+                    <div class="font-bold text-emerald-600 text-sm uppercase tracking-wider mb-2">Soal No. 3</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Apa arti dari kata <span class="font-arabic text-2xl text-emerald-600">حِجَابٌ</span> (Hijaabun)?</h3>
+                    <div class="grid gap-3">
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q3" value="a" required class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-bold text-slate-700">Sabuk</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q3" value="b" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-bold text-slate-700">Jilbab / Kerudung</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q3" value="c" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-bold text-slate-700">Topi</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SOAL 4 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100">
+                    <div class="font-bold text-emerald-600 text-sm uppercase tracking-wider mb-2">Soal No. 4</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Bahasa Arab dari <span class="text-emerald-600">"Kaos Kaki"</span> adalah?</h3>
+                    <div class="grid gap-3">
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q4" value="a" required class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">جَوْرَبٌ</span>
+                            <span class="text-slate-600 font-medium">(Jawrabun)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q4" value="b" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">حِذَاءٌ</span>
+                            <span class="text-slate-600 font-medium">(Hidzaa'un)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q4" value="c" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">حِزَامٌ</span>
+                            <span class="text-slate-600 font-medium">(Hizaamun)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SOAL 5 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100">
+                    <div class="font-bold text-emerald-600 text-sm uppercase tracking-wider mb-2">Soal No. 5</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Apa arti dari kata <span class="font-arabic text-2xl text-emerald-600">حِذَاءٌ</span> (Hidzaa'un)?</h3>
+                    <div class="grid gap-3">
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q5" value="a" required class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-bold text-slate-700">Peci</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q5" value="b" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-bold text-slate-700">Dasi</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q5" value="c" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-bold text-slate-700">Sepatu</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SOAL 6 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100">
+                    <div class="font-bold text-emerald-600 text-sm uppercase tracking-wider mb-2">Soal No. 6</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Bahasa Arab dari <span class="text-emerald-600">Sabuk / Ikat Pinggang</span> adalah?</h3>
+                    <div class="grid gap-3">
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q6" value="a" required class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">رِبَاطٌ</span>
+                            <span class="text-slate-600 font-medium">(Ribaatun)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q6" value="b" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">حِزَامٌ</span>
+                            <span class="text-slate-600 font-medium">(Hizaamun)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q6" value="c" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">قُبَّعَةٌ</span>
+                            <span class="text-slate-600 font-medium">(Qubba'atun)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SOAL 7 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100">
+                    <div class="font-bold text-emerald-600 text-sm uppercase tracking-wider mb-2">Soal No. 7</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Apa bahasa Arab dari <span class="text-emerald-600">"Topi"</span>?</h3>
+                    <div class="grid gap-3">
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q7" value="a" required class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">قَلَنْسُوَةٌ</span>
+                            <span class="text-slate-600 font-medium">(Qalansuwa)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q7" value="b" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">حِجَابٌ</span>
+                            <span class="text-slate-600 font-medium">(Hijaabun)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q7" value="c" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">قُبَّعَةٌ</span>
+                            <span class="text-slate-600 font-medium">(Qubba'atun)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SOAL 8 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-slate-100">
+                    <div class="font-bold text-emerald-600 text-sm uppercase tracking-wider mb-2">Soal No. 8</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">Manakah kata yang berarti <span class="text-emerald-600">"Peci / Kopiah"</span>?</h3>
+                    <div class="grid gap-3">
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q8" value="a" required class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">قَلَنْسُوَةٌ</span>
+                            <span class="text-slate-600 font-medium">(Qalansuwa)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q8" value="b" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">جَوْرَبٌ</span>
+                            <span class="text-slate-600 font-medium">(Jawrabun)</span>
+                        </label>
+                        <label class="option-card border-2 border-slate-200 rounded-2xl p-4 cursor-pointer flex items-center space-x-3 hover:border-emerald-300">
+                            <input type="radio" name="q8" value="c" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500">
+                            <span class="font-arabic text-2xl font-bold text-slate-700">حِزَامٌ</span>
+                            <span class="text-slate-600 font-medium">(Hizaamun)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="text-center pt-4">
+                    <button type="button" onclick="submitQuiz()" class="btn-interactive bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xl px-12 py-5 rounded-3xl shadow-lg hover:shadow-xl w-full sm:w-auto">
+                        Kirim Jawaban Latihan 🚀
+                    </button>
+                </div>
+
+            </form>
+
         </div>
 
-        <!-- HALAMAN HASIL -->
-        <div id="page-hasil" class="page">
-            <div class="header">
-                <h1>🎉 Hasil Kuis</h1>
-                <h2>Terima kasih sudah mengerjakan!</h2>
-            </div>
-            <div class="result-container">
-                <div class="score" id="score-display">0/8</div>
-                <p style="font-size: 1.3em; margin-bottom: 20px;" id="score-message"></p>
-                <div class="result-details" id="result-details"></div>
-                <div class="info-box">
-                    <strong>✅ Jawabanmu telah berhasil dikirim ke guru!</strong><br>
-                    Data sudah tersimpan di spreadsheet bersama nama dan kelasmu.
+
+        <!-- ================= HALAMAN HASIL ================= -->
+        <div id="page-hasil" class="page-content hidden space-y-8">
+            
+            <div class="bg-white rounded-3xl p-8 shadow-xl border-4 border-emerald-200 text-center space-y-6">
+                
+                <header>
+                    <span class="bg-emerald-100 text-emerald-800 text-sm font-bold px-4 py-1.5 rounded-full inline-block mb-3">Latihan Selesai!</span>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800">Hasil Nilai Kamu</h1>
+                </header>
+
+                <!-- Skor Display -->
+                <div class="bg-emerald-50 rounded-3xl p-6 border-2 border-emerald-100 inline-block w-full max-w-sm">
+                    <div id="score-display" class="text-6xl md:text-7xl font-extrabold text-emerald-600 tracking-tight mb-2">0/8</div>
+                    <p id="score-message" class="text-lg font-bold text-slate-700"></p>
                 </div>
-                <div class="btn-container">
-                    <button class="btn" onclick="showPage('page-materi')">📚 Belajar Lagi</button>
-                    <button class="btn" onclick="location.reload()">🔄 Ulangi Kuis</button>
+
+                <!-- Detail Hasil -->
+                <div class="text-left bg-slate-50 rounded-2xl p-5 border border-slate-200">
+                    <h3 class="font-bold text-slate-800 text-lg mb-3 pb-2 border-b border-slate-200">Rincian Jawaban:</h3>
+                    <div id="result-details" class="space-y-3 max-h-80 overflow-y-auto custom-scrollbar pr-1"></div>
                 </div>
+
+                <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-4 text-sky-800 text-sm font-medium">
+                    Jawaban dan nilaimu telah dikirimkan ke Bapak/Ibu Guru secara otomatis. Terima kasih ya!
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-4 pt-2">
+                    <button onclick="showPage('page-materi')" class="btn-interactive bg-emerald-500 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-md hover:bg-emerald-600">
+                        Belajar Lagi
+                    </button>
+                    <button onclick="location.reload()" class="btn-interactive bg-slate-200 text-slate-800 font-bold text-lg px-8 py-4 rounded-2xl hover:bg-slate-300">
+                        Ulangi Kuis
+                    </button>
+                </div>
+
             </div>
+
+        </div>
+
+    </div>
+
+    <!-- Notification Toast Modal (Replacement for alert) -->
+    <div id="toast" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl border-4 border-amber-300 transform transition-all">
+            <div class="text-4xl mb-3">⚠️</div>
+            <h3 id="toast-title" class="font-bold text-lg text-slate-800 mb-2">Pemberitahuan</h3>
+            <p id="toast-message" class="text-slate-600 text-sm mb-5 font-medium"></p>
+            <button onclick="closeToast()" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold text-base px-6 py-2.5 rounded-2xl w-full transition">
+                Mengerti
+            </button>
         </div>
     </div>
 
     <script>
-        // ============================================
-        // KONFIGURASI: GANTI URL INI DENGAN URL APP SCRIPT ANDA
-        // ============================================
+        // CONFIGURATION: Google App Script Endpoint
         const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby9K9t6jDn52ibJL75TwJdW_QC5VYFJQ5pvvKEMt8trXOoaIqay2hOs7bryczRpZBc/exec';
-        // ============================================
 
         const correctAnswers = { q1: 'b', q2: 'a', q3: 'b', q4: 'a', q5: 'c', q6: 'b', q7: 'c', q8: 'a' };
         const questionTexts = {
-            q1: 'Apa bahasa Arab dari "Dasi"?', q2: 'Gambar peci hitam dalam bahasa Arab disebut?',
-            q3: 'Apa arti dari kata حِجَابٌ (Hijaabun)?', q4: 'Bahasa Arab dari "Kaos Kaki" adalah?',
-            q5: 'Apa arti dari kata حِذَاءٌ (Hidzaa\'un)?', q6: 'Gambar sabuk/ikat pinggang dalam bahasa Arab disebut?',
-            q7: 'Apa bahasa Arab dari "Topi"?', q8: 'Manakah yang merupakan kosakata "Peci/Kopiah"?'
+            q1: 'Apa bahasa Arab dari "Dasi"?', 
+            q2: 'Bahasa Arab dari Peci / Kopiah adalah?',
+            q3: 'Apa arti dari kata حِجَابٌ (Hijaabun)?', 
+            q4: 'Bahasa Arab dari "Kaos Kaki" adalah?',
+            q5: 'Apa arti dari kata حِذَاءٌ (Hidzaa\'un)?', 
+            q6: 'Bahasa Arab dari Sabuk / Ikat Pinggang adalah?',
+            q7: 'Apa bahasa Arab dari "Topi"?', 
+            q8: 'Manakah kata yang berarti "Peci / Kopiah"?'
         };
 
-        // Muat data papan pengumuman saat halaman dibuka
         window.onload = function() {
             loadSubmissions();
         };
 
+        // Text-to-Speech Helper for Arabic Pronunciation
+        function speakArabic(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop any active speech
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ar-SA';
+                utterance.rate = 0.8; // Slightly slower speed for grade 2 students
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Custom modal notification
+        function showToast(message, title = 'Perhatian') {
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-message').textContent = message;
+            document.getElementById('toast').classList.remove('hidden');
+        }
+
+        function closeToast() {
+            document.getElementById('toast').classList.add('hidden');
+        }
+
+        // Navigation between pages
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
+            document.getElementById(pageId).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Fetch submissions for leaderboard display
         function loadSubmissions() {
-            if (APP_SCRIPT_URL === 'MASUKKAN_URL_APP_SCRIPT_ANDA_DI_SINI') {
-                document.getElementById('leaderboard-list').innerHTML = '<div class="empty-leaderboard">URL App Script belum diatur.</div>';
+            const container = document.getElementById('leaderboard-list');
+            if (!APP_SCRIPT_URL || APP_SCRIPT_URL === 'MASUKKAN_URL_APP_SCRIPT_ANDA_DI_SINI') {
+                container.innerHTML = '<div class="text-center text-slate-400 py-4 font-medium">URL Google Script belum diatur.</div>';
                 return;
             }
             
             fetch(APP_SCRIPT_URL)
                 .then(res => res.json())
                 .then(data => {
-                    const container = document.getElementById('leaderboard-list');
-                    if (data.length === 0) {
-                        container.innerHTML = '<div class="empty-leaderboard">Belum ada siswa yang mengerjakan. Jadilah yang pertama! 🌟</div>';
+                    if (!data || data.length === 0) {
+                        container.innerHTML = '<div class="text-center text-slate-400 py-6 font-medium">Belum ada siswa yang mengerjakan. Yuk jadi yang pertama!</div>';
                         return;
                     }
                     
                     let html = '';
                     data.forEach(item => {
-                        // Format waktu agar lebih mudah dibaca
-                        const date = new Date(item.waktu);
+                        const date = new Date(item.waktu || Date.now());
                         const timeStr = date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
                         
                         html += `
-                            <div class="leaderboard-item">
-                                <div>
-                                    <span class="lb-name">${item.nama}</span>
-                                    <span class="lb-class">${item.kelas}</span>
+                            <div class="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-2xl">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs">
+                                        ${item.kelas || '2'}
+                                    </div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-sm md:text-base">${item.nama}</div>
+                                        <div class="text-xs text-slate-400">🕒 ${timeStr}</div>
+                                    </div>
                                 </div>
-                                <div style="text-align: right;">
-                                    <div class="lb-score">Nilai: ${item.skor}/${item.total}</div>
-                                    <div class="lb-time">🕒 ${timeStr}</div>
+                                <div class="text-right">
+                                    <span class="inline-block bg-emerald-500 text-white font-extrabold text-sm px-3 py-1 rounded-xl shadow-sm">
+                                        Nilai: ${item.skor} / ${item.total || 8}
+                                    </span>
                                 </div>
                             </div>
                         `;
@@ -412,30 +606,26 @@
                 })
                 .catch(err => {
                     console.error("Gagal memuat data:", err);
-                    document.getElementById('leaderboard-list').innerHTML = '<div class="empty-leaderboard">Gagal memuat data pengumpulan.</div>';
+                    container.innerHTML = '<div class="text-center text-slate-400 py-4 font-medium">Gagal memuat data siswa.</div>';
                 });
         }
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0, 0);
-        }
-
-        document.querySelectorAll('.option input[type="radio"]').forEach(radio => {
+        // Highlight selected option cards
+        document.querySelectorAll('.option-card input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', function() {
-                const question = this.closest('.question');
-                question.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-                this.closest('.option').classList.add('selected');
+                const parentBox = this.closest('.grid');
+                parentBox.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+                this.closest('.option-card').classList.add('selected');
             });
         });
 
+        // Quiz Submission
         function submitQuiz() {
             const nama = document.getElementById('namaSiswa').value.trim();
             const kelas = document.getElementById('kelasSiswa').value;
             
             if (!nama || !kelas) {
-                alert('⚠️ Mohon isi Nama Lengkap dan pilih Kelas terlebih dahulu!');
+                showToast('Isi Nama Lengkap dan Pilih Kelasmu terlebih dahulu ya!');
                 return;
             }
 
@@ -444,11 +634,14 @@
             
             let allAnswered = true;
             for (let i = 1; i <= 8; i++) {
-                if (!formData.get(`q${i}`)) { allAnswered = false; break; }
+                if (!formData.get(`q${i}`)) { 
+                    allAnswered = false; 
+                    break; 
+                }
             }
 
             if (!allAnswered) {
-                alert('⚠️ Mohon jawab semua 8 soal terlebih dahulu!');
+                showToast('Masih ada soal yang belum dijawab. Ayo periksa kembali!');
                 return;
             }
 
@@ -463,41 +656,60 @@
                 const isCorrect = userAnswer === correctAnswer;
                 if (isCorrect) score++;
 
-                details.push({ question: questionTexts[`q${i}`], userAnswer: userAnswer, correctAnswer: correctAnswer, isCorrect: isCorrect });
+                details.push({ 
+                    question: questionTexts[`q${i}`], 
+                    userAnswer: userAnswer, 
+                    correctAnswer: correctAnswer, 
+                    isCorrect: isCorrect 
+                });
             }
 
             displayResults(score, details, nama);
 
-            if (APP_SCRIPT_URL !== 'MASUKKAN_URL_APP_SCRIPT_ANDA_DI_SINI') {
+            if (APP_SCRIPT_URL && APP_SCRIPT_URL !== 'MASUKKAN_URL_APP_SCRIPT_ANDA_DI_SINI') {
                 sendToSpreadsheet(score, answers, nama, kelas);
-            } else {
-                alert('⚠️ URL App Script belum dikonfigurasi. Hasil hanya ditampilkan di halaman ini.');
             }
         }
 
+        // Display results to the user
         function displayResults(score, details, nama) {
             document.getElementById('score-display').textContent = `${score}/8`;
-            let message = score === 8 ? '🌟 Sempurna! Kamu hebat sekali, ' + nama + '!' : 
-                          score >= 6 ? '👍 Bagus! Terus belajar ya, ' + nama + '!' : 
-                          score >= 4 ? '💪 Lumayan! Ayo belajar lagi, ' + nama + '!' : 
-                          '📚 Jangan menyerah! Coba belajar lagi, ' + nama + '!';
+            
+            let message = '';
+            if (score === 8) {
+                message = `Hebat Sekali, ${nama}! Nilaimu Sempurna! 🎉`;
+            } else if (score >= 6) {
+                message = `Bagus Sekali, ${nama}! Terus Tingkatkan Ya! ⭐`;
+            } else if (score >= 4) {
+                message = `Sudah Cukup Baik, ${nama}! Yuk Belajar Lebih Giat! 💪`;
+            } else {
+                message = `Jangan Menyerah, ${nama}! Ayo Baca Lagi Kosakatanya! 📚`;
+            }
             document.getElementById('score-message').textContent = message;
 
             const detailsContainer = document.getElementById('result-details');
-            detailsContainer.innerHTML = '<h3 style="margin-bottom: 15px;">📋 Detail Jawaban:</h3>';
+            detailsContainer.innerHTML = '';
+            
             details.forEach((detail, index) => {
                 const resultItem = document.createElement('div');
-                resultItem.className = `result-item ${detail.isCorrect ? 'correct' : 'incorrect'}`;
+                resultItem.className = `p-3 rounded-2xl border text-sm font-medium ${
+                    detail.isCorrect 
+                        ? 'bg-emerald-50 border-emerald-200 text-emerald-900' 
+                        : 'bg-rose-50 border-rose-200 text-rose-900'
+                }`;
+                
                 resultItem.innerHTML = `
-                    <strong>Soal ${index + 1}:</strong> ${detail.question}<br>
-                    <strong>Jawabanmu:</strong> ${detail.userAnswer.toUpperCase()} ${detail.isCorrect ? '✅' : '❌'}<br>
-                    ${!detail.isCorrect ? `<strong>Jawaban Benar:</strong> ${detail.correctAnswer.toUpperCase()}` : ''}
+                    <div class="font-bold mb-1">${index + 1}. ${detail.question}</div>
+                    <div>Jawabanmu: <span class="font-extrabold uppercase">${detail.userAnswer}</span> ${detail.isCorrect ? '✅' : '❌'}</div>
+                    ${!detail.isCorrect ? `<div class="text-xs text-rose-600 mt-0.5">Jawaban Benar: <span class="font-bold uppercase">${detail.correctAnswer}</span></div>` : ''}
                 `;
                 detailsContainer.appendChild(resultItem);
             });
+
             showPage('page-hasil');
         }
 
+        // Send submission to Google Sheets
         function sendToSpreadsheet(score, answers, nama, kelas) {
             const data = {
                 timestamp: new Date().toISOString(),
@@ -514,11 +726,9 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             }).then(() => {
-                console.log('Data berhasil dikirim ke spreadsheet');
-                // Reload leaderboard setelah submit berhasil (dengan delay kecil)
                 setTimeout(loadSubmissions, 1500);
             }).catch(error => {
-                console.error('Error mengirim data:', error);
+                console.error('Gagal mengirim data:', error);
             });
         }
     </script>
